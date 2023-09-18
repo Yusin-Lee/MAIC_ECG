@@ -13,14 +13,6 @@ class CustomDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         file_name = self.file_name[index]
         full_array = np.load(self.file_path + file_name + ".npy")
-        array_by_name = self.array_to_dict_by_name(full_array)
-        label = self.age[index]
-        return full_array, array_by_name, label
-
-    def __len__(self):
-        return len(self.file_name)
-
-    def array_to_dict_by_name(_array):
         _12lead = [
             "I",
             "II",
@@ -35,7 +27,18 @@ class CustomDataset(torch.utils.data.Dataset):
             "aVL",
             "aVF",
         ]
-        _dict = dict()
-        for name, p_array in zip(_12lead, np.split(_array, 12)):
-            _dict[name] = p_array
-        return _dict
+        array_by_name = dict()
+        for name, p_array in zip(_12lead, np.split(full_array, 12)):
+            array_by_name[name] = p_array
+        label = self.age[index]
+        return full_array, array_by_name, label
+
+    def __len__(self):
+        return len(self.file_name)
+
+
+def np_merge(df):
+    file_name = df["FILENAME"].values
+    gender = df["GENDER"].values
+    age = df["AGE"].values
+    file_path = file_path
