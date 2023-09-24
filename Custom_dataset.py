@@ -35,10 +35,3 @@ class CustomDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.file_name)
-
-
-def np_merge(df):
-    file_name = df["FILENAME"].values
-    gender = df["GENDER"].values
-    age = df["AGE"].values
-    file_path = file_path
